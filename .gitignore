@@ -28,3 +28,11 @@
 /ltmain.sh
 /missing
 /stamp-h1
+
+*.obj
+*.log
+*.tlog
+*.pdb
+*.ildb
+*.sdf
+*.suo
