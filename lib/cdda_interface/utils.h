@@ -22,6 +22,14 @@
 #include <stdio.h>
 #include <time.h>
 
+#if !defined(HAVE_STRUCT_TIMESPEC)
+struct timespec
+{
+    time_t  tv_sec;   /* Seconds */
+    long    tv_nsec;  /* Nanoseconds */
+};
+#endif
+
 /* I wonder how many alignment issues this is gonna trip in the
    future...  it shouldn't trip any...  I guess we'll find out :) */
 
