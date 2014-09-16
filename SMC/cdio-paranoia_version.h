@@ -1,4 +1,3 @@
-
 /* Define to the full name and version of this package. */
 #define PACKAGE_STRING "libcdio-paranoia 10.2+0.90+1"
 
