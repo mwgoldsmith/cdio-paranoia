@@ -1,9 +1,21 @@
 /*
   Copyright (C) 2004, 2005, 2006, 2008, 2011, 2012
-  Rocky Bernstein <rocky@gnu.org>
+    Rocky Bernstein <rocky@gnu.org>
   Copyright (C) 2014 Robert Kausch <robert.kausch@freac.org>
   Copyright (C) 2001 Xiph.org and Heiko Eissfeldt heiko@escape.colossus.de
-  CopyPolicy: GNU Lesser General Public License 2.1 applies
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /** \file cdda.h
@@ -27,7 +39,7 @@ extern "C" {
   */
   typedef struct cdrom_paranoia_s cdrom_paranoia_t;
   typedef struct cdrom_drive_s   cdrom_drive_t;
-  
+
   /** For compatibility. cdrom_drive_t is deprecated, use cdrom_drive_t
       instead. */
 
@@ -46,7 +58,7 @@ extern "C" {
     CD_FRAMESAMPLES       = CDIO_CD_FRAMESIZE_RAW / 4,
     MAXTRK                = (CDIO_CD_MAX_TRACKS+1)
   } paranoia_cdda_enums_t;
-  
+
 
 #include <signal.h>
 
@@ -56,7 +68,7 @@ extern "C" {
 #define MAXTRK (CDIO_CD_MAX_TRACKS+1)
 
 /** \brief Structure for cdparanoia's CD Table of Contents */
-typedef struct TOC_s {	
+typedef struct TOC_s {
   unsigned char bTrack;
   int32_t       dwStartSector;
 } TOC_t;
@@ -78,7 +90,7 @@ struct cdrom_drive_s {
 		       not. 1 if big endian, 0 if little endian and -1 if
 		       we don't know.
 		   */
-  int nsectors;   /**< Number of sectors use in reading. Multiply by 
+  int nsectors;   /**< Number of sectors use in reading. Multiply by
 		   CDIO_CD_FRAMESIZE_RAW to get number of bytes used in
 		  the read buffer. */
 
@@ -93,7 +105,7 @@ struct cdrom_drive_s {
 			   computer? */
   track_t tracks;
   TOC_t disc_toc[MAXTRK]; /**< info here starts origin 0 rather than the
-			     first track number (usually 1). So to take 
+			     first track number (usually 1). So to take
 			     a track number and use it here, subtract
 			     off cdio_get_first_track_num() beforehand.
 			   */
@@ -109,7 +121,7 @@ struct cdrom_drive_s {
 
   int  (*enable_cdda)  (cdrom_drive_t *d, int onoff);
   int  (*read_toc)     (cdrom_drive_t *d);
-  long (*read_audio)   (cdrom_drive_t *d, void *p, lsn_t begin, 
+  long (*read_audio)   (cdrom_drive_t *d, void *p, lsn_t begin,
 		       long sectors);
   int  (*set_speed)    (cdrom_drive_t *d, int speed);
   int error_retry;
@@ -143,19 +155,19 @@ struct cdrom_drive_s {
     CDDA_TEST_FRAG_SMALL     = (1<<3),
     CDDA_TEST_FRAG_LARGE     = (2<<3),
     CDDA_TEST_FRAG_MASSIVE   = (3<<3),
-    CDDA_TEST_UNDERRUN       = 64 
+    CDDA_TEST_UNDERRUN       = 64
   } paranoia_jitter_t;
-  
+
 /** jitter testing. The first two bits are set to determine the
      byte-distance we will jitter the data; 0 is no shifting.
  */
 
 /**< jitter testing. Set the below bit to always cause jittering on reads.
-     The below bit only has any effect if the first two (above) bits are 
+     The below bit only has any effect if the first two (above) bits are
      nonzero. If the above bits are set, but the below bit isn't we'll
      jitter 90% of the time.
   */
-#define CDDA_TEST_ALWAYS_JITTER     4 
+#define CDDA_TEST_ALWAYS_JITTER     4
 
 /** fragment testing */
 #define CDDA_TEST_FRAG_SMALL   (1<<3)
@@ -163,7 +175,7 @@ struct cdrom_drive_s {
 #define CDDA_TEST_FRAG_MASSIVE (3<<3)
 
 /**< under-run testing. The below bit is set for testing.  */
-#define CDDA_TEST_UNDERRUN         64 
+#define CDDA_TEST_UNDERRUN         64
 
 #if TESTING_IS_FINISHED
 
@@ -175,19 +187,25 @@ struct cdrom_drive_s {
 
 /** autosense functions */
 
-/** Get a CD-ROM drive with a CD-DA in it. 
-    If mesagedest is 1, then any messages in the process will be stored 
-    in message.
+/** Get a CD-ROM drive with a CD-DA in it.
+    If mesagedest is CDDA_MESSAGE_LOGIT, then any messages in the
+    process will be stored in message.
+
+    When using CDDA_MESSAGE_LOGIT, free the message buffer with
+    cdio_cddap_free_messages() after use.
 */
-extern cdrom_drive_t *cdio_cddap_find_a_cdrom(int messagedest, 
+extern cdrom_drive_t *cdio_cddap_find_a_cdrom(int messagedest,
 					      char **ppsz_message);
 
 /** Returns a paranoia CD-ROM drive object with a CD-DA in it or NULL
     if there was an error.
     @see cdio_cddap_identify_cdio
+
+    When using CDDA_MESSAGE_LOGIT, free the message buffer with
+    cdio_cddap_free_messages() after use.
  */
-extern cdrom_drive_t *cdio_cddap_identify(const char *psz_device, 
-					  int messagedest, 
+extern cdrom_drive_t *cdio_cddap_identify(const char *psz_device,
+					  int messagedest,
 					  char **ppsz_message);
 
 /** Returns a paranoia CD-ROM drive object with a CD-DA in it or NULL
@@ -195,22 +213,40 @@ extern cdrom_drive_t *cdio_cddap_identify(const char *psz_device,
     start out with an initialized p_cdio object. For example you may
     have used that for other purposes such as to get CDDB/CD-Text
     information.  @see cdio_cddap_identify
+
+    When using CDDA_MESSAGE_LOGIT, free the message buffer with
+    cdio_cddap_free_messages() after use.
  */
-cdrom_drive_t *cdio_cddap_identify_cdio(CdIo_t *p_cdio, 
+cdrom_drive_t *cdio_cddap_identify_cdio(CdIo_t *p_cdio,
 					int messagedest, char **ppsz_messages);
+
+/** informational functions */
+
+extern const char *cdio_cddap_version();
+
+/** Returns the current message buffer. Free the returned
+    string using cdio_cddap_free_messages() if not NULL.
+ */
+extern char   *cdio_cddap_messages(cdrom_drive_t *d);
+
+/** Returns the current error buffer. Free the returned
+    string using cdio_cddap_free_messages() if not NULL.
+ */
+extern char   *cdio_cddap_errors(cdrom_drive_t *d);
+
+/** Frees the message string passed in psz_messages.
+ */
+extern void    cdio_cddap_free_messages(char *psz_messages);
 
 /** drive-oriented functions */
 
-extern char   *cdio_cddap_version();
 extern int     cdio_cddap_speed_set(cdrom_drive_t *d, int speed);
-extern void    cdio_cddap_verbose_set(cdrom_drive_t *d, int err_action, 
+extern void    cdio_cddap_verbose_set(cdrom_drive_t *d, int err_action,
 				      int mes_action);
-extern char   *cdio_cddap_messages(cdrom_drive_t *d);
-extern char   *cdio_cddap_errors(cdrom_drive_t *d);
 
 /*!
   Closes d and releases all storage associated with it except
-  the internal p_cdio pointer. 
+  the internal p_cdio pointer.
 
   @param d cdrom_drive_t object to be closed.
   @return 0 if passed a null pointer and 1 if not in which case
@@ -222,7 +258,7 @@ bool cdio_cddap_close_no_free_cdio(cdrom_drive_t *d);
 
 /*!
   Closes d and releases all storage associated with it.
-  Doubles as "cdrom_drive_free()". 
+  Doubles as "cdrom_drive_free()".
 
   @param d cdrom_drive_t object to be closed.
   @return 0 if passed a null pointer and 1 if not in which case
@@ -241,7 +277,7 @@ extern long    cdio_cddap_read_timed(cdrom_drive_t *d, void *p_buffer,
 				     lsn_t beginsector, long sectors, int *milliseconds);
 
 /*! Return the lsn for the start of track i_track */
-extern lsn_t   cdio_cddap_track_firstsector(cdrom_drive_t *d, 
+extern lsn_t   cdio_cddap_track_firstsector(cdrom_drive_t *d,
 				      track_t i_track);
 
 /*! Get last lsn of the track. This generally one less than the start
@@ -270,7 +306,7 @@ extern int     cdio_cddap_track_audiop(cdrom_drive_t *d, track_t i_track);
 /*! Return 1 is track has copy permit set, 0 otherwise. */
 extern int     cdio_cddap_track_copyp(cdrom_drive_t *d, track_t i_track);
 
-/*! Return 1 is audio track has linear preemphasis set, 0 otherwise. 
+/*! Return 1 is audio track has linear preemphasis set, 0 otherwise.
     Only makes sense for audio tracks.
  */
 extern int     cdio_cddap_track_preemp(cdrom_drive_t *d, track_t i_track);
@@ -315,7 +351,7 @@ typedef enum {
   TR_UNKNOWN =      10  /**< Unspecified error */,
   TR_STREAMING =    11  /**< loss of streaming */,
 } transport_error_t;
-  
+
 
 #ifdef NEED_STRERROR_TR
 const char *strerror_tr[]={
@@ -334,9 +370,9 @@ const char *strerror_tr[]={
 };
 #endif /*NEED_STERROR_TR*/
 
-/** Errors returned by lib: 
+/** Errors returned by lib:
 
-\verbatim 
+\verbatim
 001: Unable to set CDROM to read audio mode
 002: Unable to read table of contents lead-out
 003: CDROM reporting illegal number of tracks
@@ -346,7 +382,7 @@ const char *strerror_tr[]={
 007: Unknown, unrecoverable error reading data
 008: Unable to identify CDROM model
 009: CDROM reporting illegal table of contents
-010: Unaddressable sector 
+010: Unaddressable sector
 
 100: Interface not supported
 101: Drive is neither a CDROM nor a WORM device
@@ -378,10 +414,10 @@ const char *strerror_tr[]={
 #define cdda_open               cdio_cddap_open
 #define cdda_read               cdio_cddap_read
 #define cdda_read_timed         cdio_cddap_read_timed
-#define cdda_track_firstsector  cdio_cddap_track_firstsector 
-#define cdda_track_lastsector   cdio_cddap_track_lastsector 
-#define cdda_tracks             cdio_cddap_tracks 
-#define cdda_sector_gettrack    cdio_cddap_sector_gettrack  
+#define cdda_track_firstsector  cdio_cddap_track_firstsector
+#define cdda_track_lastsector   cdio_cddap_track_lastsector
+#define cdda_tracks             cdio_cddap_tracks
+#define cdda_sector_gettrack    cdio_cddap_sector_gettrack
 #define cdda_track_channels     cdio_cddap_track_channels
 #define cdda_track_audiop       cdio_cddap_track_audiop
 #define cdda_track_copyp        cdio_cddap_track_copyp
@@ -405,5 +441,14 @@ const char *strerror_tr[]={
 extern paranoia_jitter_t     debug_paranoia_jitter;
 extern paranoia_cdda_enums_t debug_paranoia_cdda_enums;
 
-#endif /*CDIO__PARANOIA__CDDA_H_*/
+#ifdef __cplusplus
+extern "C" {
+#endif
+  extern const char *cdio_cddap_version(void);
+  extern void cdio_cddap_free_messages(char *psz_messages);
 
+#ifdef __cplusplus
+}
+#endif
+
+#endif /*CDIO__PARANOIA__CDDA_H_*/

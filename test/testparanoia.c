@@ -1,9 +1,9 @@
 /*
-  Copyright (C) 2005, 2006, 2008, 2011 Rocky Bernstein <rocky@gnu.org>
+  Copyright (C) 2005-2006, 2008, 2011, 2014 Rocky Bernstein <rocky@gnu.org>
 
-  This program is free software; you can redistribute it and/or modify
+  This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2 of the License, or
+  the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
 
   This program is distributed in the hope that it will be useful,
@@ -11,9 +11,8 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License along
-  with this program; if not, write to the Free Software Foundation, Inc.,
-  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /* Simple program to show using libcdio's version of cdparanoia. */
@@ -23,6 +22,7 @@
 # define __CDIO_CONFIG_H__ 1
 #endif
 
+#include <cdio/paranoia/cdda.h>
 #include <cdio/paranoia/paranoia.h>
 #include <cdio/cd_types.h>
 #include <stdio.h>
@@ -40,7 +40,7 @@
 #else
 #define BIGENDIAN 0
 #endif
- 
+
 #define SKIP_TEST_RC 77
 
 #define MAX_SECTORS 50
@@ -48,7 +48,7 @@ static uint8_t audio_buf[MAX_SECTORS][CDIO_CD_FRAMESIZE_RAW] = { {0}, };
 static paranoia_cb_mode_t audio_status[MAX_SECTORS];
 static unsigned int i = 0;
 
-static void 
+static void
 callback(long int inpos, paranoia_cb_mode_t function)
 {
   audio_status[i] = function;
@@ -78,10 +78,10 @@ main(int argc, const char *argv[])
 
   /** We had a bug in is_device when driver_id == DRIVER_UNKNOWN or
      DRIVER_DEVICE. Let's make sure we've fixed that problem. **/
-  if (!cdio_is_device(*ppsz_cd_drives, DRIVER_UNKNOWN) || 
+  if (!cdio_is_device(*ppsz_cd_drives, DRIVER_UNKNOWN) ||
       !cdio_is_device(*ppsz_cd_drives, DRIVER_DEVICE))
     exit(99);
-  
+
   /* Don't need a list of CD's with CD-DA's any more. */
   cdio_free_device_list(ppsz_cd_drives);
 
@@ -95,7 +95,7 @@ main(int argc, const char *argv[])
 
   /* Okay now set up to read up to the first 300 frames of the first
      audio track of the Audio CD. */
-  { 
+  {
     cdrom_paranoia_t *p = paranoia_init(d);
     lsn_t i_first_lsn = cdda_disc_firstsector(d);
 
@@ -108,20 +108,20 @@ main(int argc, const char *argv[])
       unsigned int j;
       unsigned int i_good = 0;
       unsigned int i_bad  = 0;
-      
+
       /* Set reading mode for full paranoia, but allow skipping sectors. */
       paranoia_modeset(p, PARANOIA_MODE_FULL^PARANOIA_MODE_NEVERSKIP);
 
       for ( j=0; j<10; j++ ) {
-	
+
 	/* Pick a place to start reading. */
 	i_lsn = i_first_lsn + (rand() % i_sectors);
 	paranoia_seek(p, i_lsn, SEEK_SET);
 
 	printf("-- Testing %d sectors starting at %ld\n",
 	       MAX_SECTORS, (long int) i_lsn);
-	for ( i = 0; 
-	      i < MAX_SECTORS && i_lsn <= i_last_lsn; 
+	for ( i = 0;
+	      i < MAX_SECTORS && i_lsn <= i_last_lsn;
 	      i++, i_lsn++ ) {
 	  /* read a sector */
 	  int16_t *p_readbuf = paranoia_read(p, callback);
@@ -129,12 +129,12 @@ main(int argc, const char *argv[])
 	  char *psz_mes=cdio_cddap_messages(d);
 
 	  memcpy(audio_buf[i], p_readbuf, CDIO_CD_FRAMESIZE_RAW);
-	  
+
 	  if (psz_mes || psz_err)
 	    printf("%s%s\n", psz_mes ? psz_mes: "", psz_err ? psz_err: "");
-	  
-	  free(psz_err);
-	  free(psz_mes);
+
+	  cdio_cddap_free_messages(psz_err);
+	  cdio_cddap_free_messages(psz_mes);
 	  if( !p_readbuf ) {
 	    printf("paranoia read error. Stopping.\n");
 	    goto out;
@@ -145,7 +145,7 @@ main(int argc, const char *argv[])
 	i_lsn -= MAX_SECTORS;
 	for ( i = 0; i < MAX_SECTORS; i++, i_lsn++ ) {
 	  uint8_t readbuf[CDIO_CD_FRAMESIZE_RAW] = {0,};
-	  if ( PARANOIA_CB_READ == audio_status[i] || 
+	  if ( PARANOIA_CB_READ == audio_status[i] ||
 	       PARANOIA_CB_VERIFY == audio_status[i] ) {
 	    /* We read the block via paranoia without an error. */
 
@@ -154,7 +154,7 @@ main(int argc, const char *argv[])
 		/* We will compare in the slow, pedantic way*/
 		int j;
 		for (j=0; j < CDIO_CD_FRAMESIZE_RAW ; j +=2) {
-		  if (audio_buf[i][j]   != readbuf[j+1] && 
+		  if (audio_buf[i][j]   != readbuf[j+1] &&
 		      audio_buf[i][j+1] != readbuf[j] ) {
 		    printf("LSN %ld doesn't match\n", (long int) i_lsn);
 		    i_bad++;
@@ -163,7 +163,7 @@ main(int argc, const char *argv[])
 		  }
 		}
 	      } else {
-		if ( 0 != memcmp(audio_buf[i], readbuf, 
+		if ( 0 != memcmp(audio_buf[i], readbuf,
 				 CDIO_CD_FRAMESIZE_RAW) ) {
 		  printf("LSN %ld doesn't match\n", (long int) i_lsn);
 		  i_bad++;
@@ -173,7 +173,7 @@ main(int argc, const char *argv[])
 	      }
 	    }
 	  } else {
-	    printf("Skipping LSN %ld because of status: %s\n", 
+	    printf("Skipping LSN %ld because of status: %s\n",
 		   (long int) i_lsn, paranoia_cb_mode2str[audio_status[i]]);
 	  }
 	}
@@ -184,9 +184,8 @@ main(int argc, const char *argv[])
     }
   out: paranoia_free(p);
   }
-  
+
   cdio_cddap_close(d);
 
   exit(i_rc);
 }
-

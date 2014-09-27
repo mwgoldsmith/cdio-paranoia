@@ -2,10 +2,10 @@
   Copyright (C) 2005, 2008 Rocky Bernstein <rocky@gnu.org>
   Copyright (C) 2014 Robert Kausch <robert.kausch@freac.org>
   Copyright (C) 1998 Monty xiphmont@mit.edu
-  
-  This program is free software; you can redistribute it and/or modify
+
+  This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2 of the License, or
+  the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
 
   This program is distributed in the hope that it will be useful,
@@ -13,9 +13,8 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License along
-  with this program; if not, write to the Free Software Foundation, Inc.,
-  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /******************************************************************
  * Top-level interface module for cdrom drive access.  SCSI, ATAPI, etc
@@ -32,7 +31,7 @@
 #include <cdio/mmc.h>
 #include <cdio/paranoia/version.h>
 
-char *cdio_cddap_version(void){
+extern const char *cdio_cddap_version(void){
   return LIBCDIO_PARANOIA_VERSION;
 }
 
@@ -48,7 +47,7 @@ static void _clean_messages(cdrom_drive_t *d)
 
 /*!
   Closes d and releases all storage associated with it except
-  the internal p_cdio pointer. 
+  the internal p_cdio pointer.
 
   @param d cdrom_drive_t object to be closed.
   @return 0 if passed a null pointer and 1 if not in which case
@@ -75,7 +74,7 @@ cdio_cddap_close_no_free_cdio(cdrom_drive_t *d)
 
 /*!
   Closes d and releases all storage associated with it.
-  Doubles as "cdrom_drive_free()". 
+  Doubles as "cdrom_drive_free()".
 
   @param d cdrom_drive_t object to be closed.
   @return 0 if passed a null pointer and 1 if not in which case
@@ -83,7 +82,7 @@ cdio_cddap_close_no_free_cdio(cdrom_drive_t *d)
 
   @see cdio_cddap_close_no_free_cdio
 */
-int 
+int
 cdio_cddap_close(cdrom_drive_t *d)
 {
   if (d) {
@@ -96,7 +95,7 @@ cdio_cddap_close(cdrom_drive_t *d)
 }
 
 /* finish initializing the drive! */
-int 
+int
 cdio_cddap_open(cdrom_drive_t *d)
 {
   int ret;
@@ -104,9 +103,9 @@ cdio_cddap_open(cdrom_drive_t *d)
 
   if ( (ret=cddap_init_drive(d)) )
     return(ret);
-  
+
   /* Check TOC, enable for CDDA */
-  
+
   /* Some drives happily return a TOC even if there is no disc... */
   {
     int i;
@@ -121,29 +120,29 @@ cdio_cddap_open(cdrom_drive_t *d)
 
   if((ret=d->enable_cdda(d,1)))
     return(ret);
-    
+
   /*  d->select_speed(d,d->maxspeed); most drives are full speed by default */
 
   if ( -1 == d->bigendianp ) {
     d->bigendianp = data_bigendianp(d);
   }
-  
+
 
   return(0);
 }
 
-int 
+int
 cdio_cddap_speed_set(cdrom_drive_t *d, int speed)
 {
   if(d->set_speed)
     if(!d->set_speed(d, speed))return 0;
-  
+
   cderror(d,"405: Option not supported by drive\n");
   return -405;
 }
 
-long 
-cdio_cddap_read_timed(cdrom_drive_t *d, void *buffer, lsn_t beginsector, 
+long
+cdio_cddap_read_timed(cdrom_drive_t *d, void *buffer, lsn_t beginsector,
 		long sectors, int *ms)
 {
   if(ms)*ms= -1;
@@ -160,7 +159,7 @@ cdio_cddap_read_timed(cdrom_drive_t *d, void *buffer, lsn_t beginsector,
 	  int i;
 	  uint16_t *p=(uint16_t *)buffer;
 	  long els=sectors*CDIO_CD_FRAMESIZE_RAW/2;
-	  
+
 	  for(i=0;i<els;i++)
 	    p[i]=UINT16_SWAP_LE_BE_C(p[i]);
 	}
@@ -169,7 +168,7 @@ cdio_cddap_read_timed(cdrom_drive_t *d, void *buffer, lsn_t beginsector,
     if(ms)*ms=d->last_milliseconds;
     return(sectors);
   }
-  
+
   cderror(d,"400: Device not open\n");
   return(-400);
 }
@@ -178,7 +177,7 @@ long cdio_cddap_read(cdrom_drive_t *d, void *buffer, lsn_t beginsector, long sec
   return cdda_read_timed(d,buffer,beginsector,sectors,NULL);
 }
 
-void 
+void
 cdio_cddap_verbose_set(cdrom_drive_t *d,int err_action, int mes_action)
 {
   d->messagedest=mes_action;
@@ -201,3 +200,9 @@ cdio_cddap_errors(cdrom_drive_t *d)
   return(ret);
 }
 
+extern void
+cdio_cddap_free_messages(char *psz_messages)
+{
+  if (psz_messages != NULL)
+    free(psz_messages);
+}
