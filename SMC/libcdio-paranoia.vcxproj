@@ -323,7 +323,7 @@
 mkdir $(OutDir)\include\cdio\paranoia
 copy ..\include\cdio\paranoia\*.h $(OutDir)\include\cdio\paranoia
 mkdir $(OutDir)\licenses
-copy ..\COPYING-LGPL $(OutDir)\licenses\libcdio-paranoia.txt</Command>
+copy ..\COPYING $(OutDir)\licenses\libcdio-paranoia.txt</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if exist ..\config.h (
@@ -367,7 +367,7 @@ cd $(ProjectDir)
 mkdir $(OutDir)\include\cdio\paranoia
 copy ..\include\cdio\paranoia\*.h $(OutDir)\include\cdio\paranoia
 mkdir $(OutDir)\licenses
-copy ..\COPYING-LGPL $(OutDir)\licenses\libcdio-paranoia.txt</Command>
+copy ..\COPYING $(OutDir)\licenses\libcdio-paranoia.txt</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if exist ..\config.h (
@@ -412,7 +412,7 @@ cd $(ProjectDir)
 mkdir $(OutDir)\include\cdio\paranoia
 copy ..\include\cdio\paranoia\*.h $(OutDir)\include\cdio\paranoia
 mkdir $(OutDir)\licenses
-copy ..\COPYING-LGPL $(OutDir)\licenses\libcdio-paranoia.txt</Command>
+copy ..\COPYING $(OutDir)\licenses\libcdio-paranoia.txt</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if exist ..\config.h (
@@ -457,7 +457,7 @@ cd $(ProjectDir)
 mkdir $(OutDir)\include\cdio\paranoia
 copy ..\include\cdio\paranoia\*.h $(OutDir)\include\cdio\paranoia
 mkdir $(OutDir)\licenses
-copy ..\COPYING-LGPL $(OutDir)\licenses\libcdio-paranoia.txt</Command>
+copy ..\COPYING $(OutDir)\licenses\libcdio-paranoia.txt</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if exist ..\config.h (
@@ -501,7 +501,7 @@ cd $(ProjectDir)
 mkdir $(OutDir)\include\cdio\paranoia
 copy ..\include\cdio\paranoia\*.h $(OutDir)\include\cdio\paranoia
 mkdir $(OutDir)\licenses
-copy ..\COPYING-LGPL $(OutDir)\licenses\libcdio-paranoia.txt</Command>
+copy ..\COPYING $(OutDir)\licenses\libcdio-paranoia.txt</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if exist ..\config.h (
@@ -545,7 +545,7 @@ cd $(ProjectDir)
 mkdir $(OutDir)\include\cdio\paranoia
 copy ..\include\cdio\paranoia\*.h $(OutDir)\include\cdio\paranoia
 mkdir $(OutDir)\licenses
-copy ..\COPYING-LGPL $(OutDir)\licenses\libcdio-paranoia.txt</Command>
+copy ..\COPYING $(OutDir)\licenses\libcdio-paranoia.txt</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if exist ..\config.h (
@@ -602,7 +602,7 @@ cd $(ProjectDir)
 mkdir $(OutDir)\include\cdio\paranoia
 copy ..\include\cdio\paranoia\*.h $(OutDir)\include\cdio\paranoia
 mkdir $(OutDir)\licenses
-copy ..\COPYING-LGPL $(OutDir)\licenses\libcdio-paranoia.txt</Command>
+copy ..\COPYING $(OutDir)\licenses\libcdio-paranoia.txt</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if exist ..\config.h (
@@ -659,7 +659,7 @@ cd $(ProjectDir)
 mkdir $(OutDir)\include\cdio\paranoia
 copy ..\include\cdio\paranoia\*.h $(OutDir)\include\cdio\paranoia
 mkdir $(OutDir)\licenses
-copy ..\COPYING-LGPL $(OutDir)\licenses\libcdio-paranoia.txt</Command>
+copy ..\COPYING $(OutDir)\licenses\libcdio-paranoia.txt</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if exist ..\config.h (
@@ -716,7 +716,7 @@ cd $(ProjectDir)
 mkdir $(OutDir)\include\cdio\paranoia
 copy ..\include\cdio\paranoia\*.h $(OutDir)\include\cdio\paranoia
 mkdir $(OutDir)\licenses
-copy ..\COPYING-LGPL $(OutDir)\licenses\libcdio-paranoia.txt</Command>
+copy ..\COPYING $(OutDir)\licenses\libcdio-paranoia.txt</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if exist ..\config.h (
@@ -773,7 +773,7 @@ cd $(ProjectDir)
 mkdir $(OutDir)\include\cdio\paranoia
 copy ..\include\cdio\paranoia\*.h $(OutDir)\include\cdio\paranoia
 mkdir $(OutDir)\licenses
-copy ..\COPYING-LGPL $(OutDir)\licenses\libcdio-paranoia.txt</Command>
+copy ..\COPYING $(OutDir)\licenses\libcdio-paranoia.txt</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if exist ..\config.h (
@@ -829,7 +829,7 @@ cd $(ProjectDir)
 mkdir $(OutDir)\include\cdio\paranoia
 copy ..\include\cdio\paranoia\*.h $(OutDir)\include\cdio\paranoia
 mkdir $(OutDir)\licenses
-copy ..\COPYING-LGPL $(OutDir)\licenses\libcdio-paranoia.txt</Command>
+copy ..\COPYING $(OutDir)\licenses\libcdio-paranoia.txt</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if exist ..\config.h (
@@ -885,7 +885,7 @@ cd $(ProjectDir)
 mkdir $(OutDir)\include\cdio\paranoia
 copy ..\include\cdio\paranoia\*.h $(OutDir)\include\cdio\paranoia
 mkdir $(OutDir)\licenses
-copy ..\COPYING-LGPL $(OutDir)\licenses\libcdio-paranoia.txt</Command>
+copy ..\COPYING $(OutDir)\licenses\libcdio-paranoia.txt</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if exist ..\config.h (
@@ -941,7 +941,7 @@ cd $(ProjectDir)
 mkdir $(OutDir)\include\cdio\paranoia
 copy ..\include\cdio\paranoia\*.h $(OutDir)\include\cdio\paranoia
 mkdir $(OutDir)\licenses
-copy ..\COPYING-LGPL $(OutDir)\licenses\libcdio-paranoia.txt</Command>
+copy ..\COPYING $(OutDir)\licenses\libcdio-paranoia.txt</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if exist ..\config.h (
@@ -997,7 +997,7 @@ cd $(ProjectDir)
 mkdir $(OutDir)\include\cdio\paranoia
 copy ..\include\cdio\paranoia\*.h $(OutDir)\include\cdio\paranoia
 mkdir $(OutDir)\licenses
-copy ..\COPYING-LGPL $(OutDir)\licenses\libcdio-paranoia.txt</Command>
+copy ..\COPYING $(OutDir)\licenses\libcdio-paranoia.txt</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if exist ..\config.h (
