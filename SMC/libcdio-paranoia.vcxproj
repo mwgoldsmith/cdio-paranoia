@@ -406,6 +406,7 @@ cd $(ProjectDir)
       <ModuleDefinitionFile>libcdio-paranoia.def</ModuleDefinitionFile>
       <AdditionalDependencies>libcdiod.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PostBuildEvent>
       <Command>mkdir $(OutDir)\include
@@ -451,6 +452,7 @@ cd $(ProjectDir)
       <ModuleDefinitionFile>libcdio-paranoia.def</ModuleDefinitionFile>
       <AdditionalDependencies>libcdiod.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PostBuildEvent>
       <Command>mkdir $(OutDir)\include
@@ -823,6 +825,7 @@ cd $(ProjectDir)
       <ModuleDefinitionFile>libcdio-paranoia.def</ModuleDefinitionFile>
       <AdditionalDependencies>libcdio.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PostBuildEvent>
       <Command>mkdir $(OutDir)\include
@@ -879,6 +882,7 @@ cd $(ProjectDir)
       <ModuleDefinitionFile>libcdio-paranoia.def</ModuleDefinitionFile>
       <AdditionalDependencies>libcdio.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PostBuildEvent>
       <Command>mkdir $(OutDir)\include
