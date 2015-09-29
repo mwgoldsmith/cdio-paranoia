@@ -3,7 +3,7 @@
 /* #undef CYGWIN */
 
 /* what to put between the brackets for empty arrays */
-#define EMPTY_ARRAY_SIZE 
+#define EMPTY_ARRAY_SIZE
 
 /* Define 1 if you have BSDI-type CD-ROM support */
 /* #undef HAVE_BSDI_CDROM */
@@ -174,7 +174,11 @@
 #define HAVE_STRING_H 1
 
 /* Define this if you have struct timespec */
+#if _MSC_VER >= 1900
+#define HAVE_STRUCT_TIMESPEC 1
+#else
 /* #undef HAVE_STRUCT_TIMESPEC */
+#endif
 
 /* Define to 1 if you have the <sys/cdio.h> header file. */
 /* #undef HAVE_SYS_CDIO_H */
