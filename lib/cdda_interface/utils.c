@@ -27,7 +27,11 @@
 void
 cderror(cdrom_drive_t *d,const char *s)
 {
+#ifndef _MSC_VER
   ssize_t bytes_ret __attribute__((unused));
+#else
+  ssize_t bytes_ret;
+#endif
   if(s && d){
     switch(d->errordest){
     case CDDA_MESSAGE_PRINTIT:
@@ -48,7 +52,11 @@ cderror(cdrom_drive_t *d,const char *s)
 void
 cdmessage(cdrom_drive_t *d, const char *s)
 {
+#ifndef _MSC_VER
   ssize_t bytes_ret __attribute__((unused));
+#else
+  ssize_t bytes_ret;
+#endif
   if(s && d){
     switch(d->messagedest){
     case CDDA_MESSAGE_PRINTIT:
@@ -83,7 +91,11 @@ idperror(int messagedest,char **messages,const char *f,
     }
 
   if(buffer){
+#ifndef _MSC_VER
     ssize_t bytes_ret __attribute__((unused));
+#else
+    ssize_t bytes_ret;
+#endif
     switch(messagedest){
     case CDDA_MESSAGE_PRINTIT:
       bytes_ret = write(STDERR_FILENO,buffer,strlen(buffer));
@@ -117,7 +129,11 @@ idmessage(int messagedest,char **messages,const char *f,
 {
   char *buffer;
   int malloced=0;
+#ifndef _MSC_VER
   ssize_t bytes_ret __attribute__((unused));
+#else
+  ssize_t bytes_ret;
+#endif
   if(!f)
     buffer=(char *)s;
   else

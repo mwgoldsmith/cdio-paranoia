@@ -39,7 +39,11 @@ static void PutNum(long num,int f,int endianness,int bytes){
 void
 WriteWav(int f, long int bytes)
 {
+#ifndef _MSC_VER
   int dummy __attribute__((unused));
+#else
+  int dummy;
+#endif
 
   /* quick and dirty */
 
@@ -63,7 +67,11 @@ WriteAiff(int f, long int bytes)
 {
   long size=bytes+54;
   long frames=bytes/4;
+#ifndef _MSC_VER
   int dummy __attribute__((unused));
+#else
+  int dummy;
+#endif
 
   /* Again, quick and dirty */
 
@@ -91,7 +99,11 @@ WriteAifc(int f, long bytes)
 {
   long size=bytes+86;
   long frames=bytes/4;
+#ifndef _MSC_VER
   int dummy __attribute__((unused));
+#else
+  int dummy;
+#endif
 
   /* Again, quick and dirty */
 
