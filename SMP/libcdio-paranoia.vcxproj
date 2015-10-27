@@ -65,7 +65,6 @@
     <ClInclude Include="..\include\cdio\paranoia\cdda.h" />
     <ClInclude Include="..\include\cdio\paranoia\paranoia.h" />
     <ClInclude Include="config.h" />
-    <ClInclude Include="version.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\lib\cdda_interface\cddap_interface.c" />
